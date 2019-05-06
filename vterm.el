@@ -61,7 +61,9 @@
   (let ((default-directory (file-name-directory (file-truename (locate-library "vterm")))))
     (unless (file-executable-p (concat default-directory "vterm-module.so" ))
       (let* ((buffer (get-buffer-create vterm-install-buffer-name))
-             (status (call-process "sh" nil buffer t "-c"
+             (status (call-process "nix-shell" nil buffer t
+                                   "-p" "cmake" "gnumake" "libtool"
+                                   "--run"
                                    "mkdir -p build;                             \
                                     cd build;                                   \
                                     cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..; \
